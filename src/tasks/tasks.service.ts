@@ -22,27 +22,10 @@ export class TasksService {
         
         return found;
     }
-    // private tasks: Task[] = [];
 
-    // getAllTasks(): Task[] {
-    //     return this.tasks;
-    // }
-
-    // getTasksWithFilters(filterDTO: GetTasksFilterDto): Task[] {
-    //     const { status, search } = filterDTO;
-
-    //     let tasks = this.getAllTasks();
-
-    //     if(status) {
-    //         tasks = tasks.filter((task) => task.status === status);
-    //     }
-
-    //     if(search) {
-    //         tasks = tasks.filter(task => task.title.includes(search) || task.description.includes(search));
-    //     }
-
-    //     return tasks;
-    // }
+    getTasks(filterDTO: GetTasksFilterDto): Promise<Task[]> {
+        return this.tasksRepository.getTasks(filterDTO);
+    }
 
     createTask(createTaskDto: CreateTaskDto): Promise<Task> {
         return this.tasksRepository.createTask(createTaskDto);
@@ -56,9 +39,11 @@ export class TasksService {
         }
     }
 
-    // updateTaskStatus(id: string, status: TaskStatus): Task{
-    //     const task = this.getTaskById(id);
-    //     task.status = status;
-    //     return task;
-    // }
+    async updateTaskStatus(id: string, status: TaskStatus): Promise<Task> {
+        const task = await this.getTaskById(id);
+        task.status = status;
+
+        this.tasksRepository.save(task);
+        return task;
+    }
 }
