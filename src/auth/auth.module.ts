@@ -21,7 +21,7 @@ import { UsersRepository } from './users.repository';
     ])
   ],
   controllers: [AuthController],
-  providers: [AuthService],
+  providers: [AuthService, JwtStrategy],
   exports: [
     JwtStrategy,
     PassportModule
